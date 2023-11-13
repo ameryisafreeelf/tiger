@@ -18,16 +18,16 @@ val prog =
            OpExp(NumExp 10, Times, IdExp"a"))),
    PrintStm[IdExp "b"]))
 
-fun maxargs (CompoundStm (s, t)) = Int.max(maxargs s, maxargs t)
-	| maxargs (AssignStm (_, e)) = expargs e
-	| maxargs (PrintStm (l)) = Int.max(length l, explist l)
-	(* Getting number of args out of expressions *)
+(* Getting number of args out of lists *)
+fun explist ([]) = 0
+  | explist (e::t) = Int.max(expargs(e), explist(t))
+(* Getting number of args out of expressions *)
 and expargs (EseqExp (s, e)) = Int.max(maxargs s, expargs e)
 	| expargs (OpExp (e1, _, e2)) = Int.max(expargs e1, expargs e2)
 	| expargs (i) = 0
-	(* Getting number of args out of lists *)
-and explist ([]) = 0
-  | explist (e::t) = Int.max(expargs(e), explist(t))
+and maxargs (CompoundStm (s, t)) = Int.max(maxargs s, maxargs t)
+	| maxargs (AssignStm (_, e)) = expargs e
+	| maxargs (PrintStm (l)) = Int.max(length l, explist l)
 
 structure IDTable = 
 struct
