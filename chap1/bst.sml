@@ -4,9 +4,8 @@
  *)
 
 type key = string
-type value = int
 
-datatype tree = LEAF | TREE of tree * key * value * tree
+datatype 'a tree = LEAF | TREE of 'a tree * key * 'a * 'a tree
 
 val empty = LEAF
 
@@ -28,15 +27,15 @@ fun member (key, LEAF) = false
         else member (key, l) 
 *)
 
-fun insert (k: key, v: value, LEAF): tree = TREE(LEAF, k, v, LEAF)
-    | insert (k: key, v: value, TREE(l, k', v', r)) = 
+fun insert (k: key, v: 'a, LEAF): 'a tree = TREE(LEAF, k, v, LEAF)
+    | insert (k: key, v: 'a, TREE(l, k', v', r)) = 
         if k < k'
           then TREE(insert(k, v, l), k', v', r)
         else if k > k'
           then TREE(l, k', v', insert(k, v, r))
         else TREE(l, k, v, r)
 
-fun lookup (key, LEAF) = false
+fun lookup (key, LEAF): bool = false
     | lookup (key, (TREE(l, k, _, r))) = 
         if k = key 
           then true
