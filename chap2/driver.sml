@@ -1,7 +1,10 @@
 structure Parse =
 struct 
+
   fun parse filename =
-      let val file = TextIO.openIn filename
+      (* Honestly not sure where else to call this reset *)
+      let val reset = ErrorMsg.reset();
+	  val file = TextIO.openIn filename
 	  fun get _ = TextIO.input file
 	  val lexer = Mlex.makeLexer get
 	  fun do_it() =
@@ -14,4 +17,3 @@ struct
       end
 
 end
-

@@ -1,0 +1,5 @@
+/* String over multiple lines using a single backslash */
+
+"hello \
+\	\
+\ world";
