@@ -1,0 +1,6 @@
+.cm.*
+bin.*
+base.*
+config.*
+lib.*
+config.tgz

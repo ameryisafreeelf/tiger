@@ -37,7 +37,7 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
   
 <INITIAL>"type"	            => (linePos := (yypos + 4) :: !linePos;
                                 Tokens.TYPE(yypos, yypos + 4));
-<INITIAL>"var"  	        => (linePos := (yypos + 3) :: !linePos;
+<INITIAL>"var"              => (linePos := (yypos + 3) :: !linePos;
                                 Tokens.VAR(yypos, yypos + 3));
 <INITIAL>"function"         => (linePos := (yypos + 8) :: !linePos;
                                 Tokens.FUNCTION(yypos, yypos + 8));
@@ -128,7 +128,7 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
                                 YYBEGIN STRING;
                                 stringBegin := yypos;
                                 stringBuf := "";
-							    inString := true;
+                                inString := true;
                                 continue());
 
 <STRING>\\                  => (YYBEGIN ESCAPE;
@@ -139,11 +139,11 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
                                 linePos := yypos :: !linePos; 
                                 continue());
 
-<ESCAPE>n			        => (linePos := (yypos + 1) :: !linePos;
+<ESCAPE>n                   => (linePos := (yypos + 1) :: !linePos;
                                 lineNum := (!lineNum) + 1;
                                 stringBuf := !stringBuf ^ "\n";
                                 YYBEGIN STRING;
-							    continue());
+                                continue());
 
 <ESCAPE>t			        => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ "\t";
@@ -158,7 +158,7 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
 <ESCAPE>\\                  => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ "\\";
                                 YYBEGIN STRING;
-							    continue());
+                                continue());
 
 <ESCAPE>\"                  => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ "\"";
@@ -176,7 +176,7 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
 <STRING>\n                  => (linePos := (yypos + 1) :: !linePos;
                                 lineNum := (!lineNum) + 1; 
                                 stringBuf := !stringBuf ^ "\n";
-						    	continue());
+                                continue());
 
 <STRING>[\t\r\f]*           => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ yytext;
@@ -184,7 +184,7 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
 
 <STRING>"\""                => (linePos := (yypos + 1) :: !linePos;
                                 YYBEGIN INITIAL; 
-							    inString := false;
+                                inString := false;
                                 Tokens.STRING(!stringBuf, !stringBegin, yypos));
 
 <STRING>.                   => (linePos := (yypos + size(yytext)) :: !linePos;
