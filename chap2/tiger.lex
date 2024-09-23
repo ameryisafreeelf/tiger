@@ -145,10 +145,10 @@ identifier = [a-zA-Z][a-zA-Z0-9_]*;
                                 YYBEGIN STRING;
                                 continue());
 
-<ESCAPE>t			        => (linePos := (yypos + 1) :: !linePos;
+<ESCAPE>t                   => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ "\t";
                                 YYBEGIN STRING;
-							    continue());
+                                continue());
 
 <ESCAPE>^[A-Z@\[\\\]^_]     => (linePos := (yypos + 1) :: !linePos;
                                 stringBuf := !stringBuf ^ yytext;
